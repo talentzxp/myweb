@@ -1,0 +1,58 @@
+# Git 快速操作 - PowerShell 配置
+# 
+# 安装步骤：
+# 1. 打开 PowerShell，运行：notepad $PROFILE
+# 2. 将下面的内容复制到配置文件中
+# 3. 保存并重启 PowerShell
+# 4. 如果遇到执行策略错误，运行：Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
+
+# ============== 复制下面的内容到 $PROFILE ==============
+
+# Git 快捷别名
+Set-Alias -Name gs -Value Get-GitStatus
+Set-Alias -Name gp -Value Invoke-GitPush
+
+function Get-GitStatus {
+    git status
+}
+
+function Invoke-GitPush {
+    param([string]$message = "更新内容")
+    Write-Host "📝 添加文件..." -ForegroundColor Cyan
+    git add .
+    
+    Write-Host "💾 提交更改: $message" -ForegroundColor Cyan
+    git commit -m $message
+    
+    Write-Host "🚀 推送到远程..." -ForegroundColor Cyan
+    git push
+    
+    if ($LASTEXITCODE -eq 0) {
+        Write-Host "✅ 成功推送!" -ForegroundColor Green
+    } else {
+        Write-Host "❌ 推送失败" -ForegroundColor Red
+    }
+}
+
+function Invoke-GitSync {
+    Write-Host "🔄 同步远程更改..." -ForegroundColor Cyan
+    git pull --rebase
+    if ($LASTEXITCODE -eq 0) {
+        Write-Host "🚀 推送本地更改..." -ForegroundColor Cyan
+        git push
+    }
+}
+
+function Undo-GitCommit {
+    Write-Host "↩️  撤销最后一次提交（保留更改）..." -ForegroundColor Yellow
+    git reset --soft HEAD~1
+}
+
+function Show-GitLog {
+    git log --oneline --graph --decorate --all -10
+}
+
+# 使用说明
+Write-Host "🎉 Git 快捷命令已加载！" -ForegroundColor Green
+Write-Host "  gp '提交信息'  - 快速提交并推送" -ForegroundColor Cyan
+Write-Host "  gs            - 查看状态" -ForegroundColor Cyan

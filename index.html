@@ -8,7 +8,13 @@
 </head>
 <body>
   <h1>欢迎来到我的网站！</h1>
-  <img src="image/howcani.png" alt="png">
-  <h2>zxp<span class="ri--star-smile-line"></span> <p>2025年11月27日 </h2>  
+  <img id="main-img" src="image/howcani.png" alt="png">
+  <h2><a href="#" id="zxp-link" style="color: #999; text-decoration: underline; cursor: pointer;">zxp</a> <span style="font-weight:normal;"><p></p>2025年11月27日</span></h2>
+  <script>
+    document.getElementById('zxp-link').onclick = function(e) {
+      e.preventDefault();
+      document.getElementById('main-img').src = 'image/smilebro.png';
+    };
+  </script>
 </body>
 </html>
