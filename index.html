@@ -7,9 +7,9 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>欢迎来到我的网站！</h1>
+  <h1>欢迎访问zxp</h1>
   <img id="main-img" src="image/howcani.png" alt="png" style="cursor:pointer;">
-  <h2><a href="#" id="zxp-link" style="color: #999; text-decoration: underline; cursor: pointer;">zxp</a> <span style="font-weight:normal;"></span></h2>
+  
     <div style="font-size:12px;color:#bbb;margin-bottom:20px;">
       <a href="#" id="log-link" style="color:#bbb;text-decoration:underline;">2025-11-29：图片自适应优化，添加右侧导航栏，zxp下方增加更新说明。</a>
     </div>
@@ -18,11 +18,6 @@
       document.getElementById('log-link').onclick = function(e) {
         e.preventDefault();
         window.location.href = 'log/update.log';
-      };
-      // zxp切换图片
-      document.getElementById('zxp-link').onclick = function(e) {
-        e.preventDefault();
-        document.getElementById('main-img').src = 'image/smilebro.png';
       };
       // 随机图片切换
       const imgList = ['howcani.png', 'smilebro.png'];
@@ -35,8 +30,8 @@
     </script>
 </body>
 </body>
-<div class="sidebar">
-  <h3>导航</h3>
+<div class="sidebar" id="sidebar">
+  <h3 id="sidebar-toggle" style="cursor:pointer;">导航</h3>
   <ul>
     <li><a href="index.html">首页</a></li>
     <li><a href="categories.html">文章分类</a></li>
@@ -48,4 +43,5 @@
     <li><a href="research-log.html">科研日志</a></li>
   </ul>
 </div>
+<script src="sidebar.js"></script>
 </html>
