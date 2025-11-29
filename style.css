@@ -55,14 +55,42 @@
 .sidebar h3 {
 }
 
+/* 手机端导航栏固定宽度，不动态 */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 140px !important;
+    padding: 40px 10px 10px 10px !important;
+    overflow: auto;
+    transition: none;
+  }
+  .sidebar h3 {
+    writing-mode: horizontal-tb;
+    transform: none;
+    margin-bottom: 10px;
+    margin-left: 0;
+  }
+  .sidebar ul {
+    opacity: 1 !important;
+    pointer-events: auto !important;
+  }
+}
+.sidebar:hover {
+  width: 180px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+.sidebar h3 {
+}
+
 img {
-  writing-mode: vertical-lr;
-  transform: rotate(180deg);
-  letter-spacing: 2px;
-  margin-left: 2px;
-  margin-top: 0;
-  margin-bottom: 0;
-  transition: all 0.3s;
+  border-radius: 15px;
+  width: 100%;
+  max-width: 700px;
+  max-height: 70vh;
+  height: auto;
+  display: block;
+  margin: 20px auto;
+  object-fit: contain;
 }
 .sidebar:hover h3 {
   writing-mode: horizontal-tb;
@@ -96,6 +124,12 @@ img {
     padding: 20px;
   }
   
+  .sidebar li {
+    margin: 10px 0;
+    white-space: nowrap;
+  }
+
+  /* 响应式设计 */
   img {
     width: 100%;
   }
