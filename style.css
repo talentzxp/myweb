@@ -40,7 +40,11 @@
     width: 140px !important;
     padding: 40px 10px 10px 10px !important;
     overflow: auto;
-    transition: none;
+    transition: right 0.3s cubic-bezier(.4,0,.2,1), width 0.3s cubic-bezier(.4,0,.2,1);
+    right: -140px;
+  }
+  .sidebar.expanded {
+    right: 0;
   }
   .sidebar h3 {
     writing-mode: horizontal-tb;
