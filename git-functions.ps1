@@ -1,5 +1,6 @@
-# Git 工具函数
+# Git 工具函数 
 # 将此文件内容添加到你的 PowerShell 配置文件中
+# git add . ; git commit -m "..."; git push
 
 # 快速提交并推送
 function git-quick {

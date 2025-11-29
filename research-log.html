@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>科研日志</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .log-card {background:#f8f8f8;border:1px solid #e0e0e0;border-radius:8px;padding:18px;margin:20px auto;max-width:600px;box-shadow:0 2px 8px #0001;}
+    .log-title {font-size:20px;font-weight:bold;margin-bottom:6px;}
+    .log-date {font-size:13px;color:#888;margin-bottom:10px;}
+    .log-section {margin-bottom:8px;}
+    .log-label {font-weight:bold;color:#337ab7;}
+    .log-actions {margin-top:10px;display:flex;align-items:center;gap:16px;}
+    .approve-btn {background:#2e8b57;color:#fff;border:none;padding:4px 14px;border-radius:4px;cursor:pointer;}
+    .approve-btn[disabled] {background:#aaa;cursor:not-allowed;}
+    .log-comments {margin-top:10px;}
+    .log-comment {background:#fff;border:1px solid #eee;border-radius:4px;padding:6px 10px;margin-bottom:6px;}
+    .comment-form {display:flex;gap:6px;margin-top:6px;}
+    .comment-form input {flex:1;padding:4px 8px;border:1px solid #ccc;border-radius:4px;}
+    .comment-form button {padding:4px 10px;border:none;background:#337ab7;color:#fff;border-radius:4px;cursor:pointer;}
+  </style>
+</head>
+<body>
+  <h1>科研日志</h1>
+  <div id="md-list"></div>
+  <a href="index.html">返回首页</a>
+  <!-- marked.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script>
+    // 自动加载research-log文件夹下所有md文件（需服务器支持列目录）
+    async function fetchMarkdownList() {
+      // 简单写死一个文件列表，后续可用API或脚本自动生成
+      const files = [
+        'research-log/2025-11-29-遥感影像分类精度问题.md'
+      ];
+      let html = '';
+      for (const file of files) {
+        const res = await fetch(file);
+        const text = await res.text();
+        html += `<div class='log-card'>${marked.parse(text)}</div>`;
+      }
+      document.getElementById('md-list').innerHTML = html;
+    }
+    window.onload = fetchMarkdownList;
+  </script>
+</body>
+</html>
