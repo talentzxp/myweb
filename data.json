@@ -1,0 +1,77 @@
+{
+  "projects": [
+    {
+      "name": "CSSO 论文定稿",
+      "pct": 85,
+      "status": "图表优化中"
+    },
+    {
+      "name": "LST 综述写作",
+      "pct": 40,
+      "status": "文献阅读阶段"
+    },
+    {
+      "name": "期货系统 v2",
+      "pct": 60,
+      "status": "模型调参中"
+    },
+    {
+      "name": "个人主页改版",
+      "pct": 30,
+      "status": "设计阶段"
+    }
+  ],
+  "milestones": [
+    {
+      "text": "CSSO v3 全流程跑通",
+      "date": "2025-05-20",
+      "status": "done"
+    },
+    {
+      "text": "Bootstrap并行优化完成",
+      "date": "2025-05-18",
+      "status": "done"
+    },
+    {
+      "text": "期货系统43模块全部通过",
+      "date": "2025-05-12",
+      "status": "done"
+    },
+    {
+      "text": "CSSO论文图表精修",
+      "date": "进行中",
+      "status": "wip"
+    },
+    {
+      "text": "LST综述初稿",
+      "date": "待开始",
+      "status": "todo"
+    }
+  ],
+  "feed": [
+    {
+      "time": "今天",
+      "text": "CSSO pipeline v3 跑通全流程，XGBoost AUC 0.829 🎉"
+    },
+    {
+      "time": "3天前",
+      "text": "bootstrap 优化完成，CPU+joblib并行比串行快 23倍"
+    },
+    {
+      "time": "1周前",
+      "text": "给 Rainmeter 工作台加了 Bento Grid 布局"
+    },
+    {
+      "time": "2周前",
+      "text": "开始写 森林覆盖×LST 综述，啃了3篇核心文献"
+    },
+    {
+      "time": "3周前",
+      "text": "农作物期货系统 43个模块 全部跑通 ✅"
+    },
+    {
+      "time": "1个月前",
+      "text": "B站 GIS 视频突破 30万播放"
+    }
+  ]
+}

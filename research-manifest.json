@@ -1,0 +1,28 @@
+{
+  "notes": [
+    {
+      "file": "research-log/2025-05-20-XGBoost小样本SDM表现.md",
+      "tag": "research",
+      "title": "XGBoost vs RF 在小样本SDM中的表现差异",
+      "date": "2025-05-20"
+    },
+    {
+      "file": "research-log/2025-05-18-bootstrap并行优化.md",
+      "tag": "code",
+      "title": "Bootstrap并行优化：joblib比串行快23倍",
+      "date": "2025-05-18"
+    },
+    {
+      "file": "research-log/2025-05-15-vibe-coding边界.md",
+      "tag": "thought",
+      "title": "Vibe Coding 的边界在哪里？",
+      "date": "2025-05-15"
+    },
+    {
+      "file": "research-log/2025-11-29-遥感影像分类精度问题.md",
+      "tag": "code",
+      "title": "遥感影像分类精度问题",
+      "date": "2025-11-29"
+    }
+  ]
+}

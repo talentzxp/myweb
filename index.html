@@ -1,47 +1,373 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>my web</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ZXP · Blog</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700&family=Noto+Serif+SC:wght@400;600;700&display=swap');
+  *{margin:0;padding:0;box-sizing:border-box}
+  :root{
+    --bg:#fdfcfa;--fg:#1a1a1a;--fg2:#666;--fg3:#aaa;
+    --border:#eae8e4;--accent:#c2553a;
+    --serif:'DM Serif Display','Noto Serif SC',Georgia,serif;
+    --sans:'Inter','Noto Sans SC',system-ui,sans-serif;
+  }
+  html{scroll-behavior:smooth}
+  body{font-family:var(--sans);color:var(--fg);background:var(--bg);line-height:1.75;-webkit-font-smoothing:antialiased}
+  ::selection{background:var(--accent);color:#fff}
+  a{color:inherit;text-decoration:none}
+
+  .layout{display:grid;grid-template-columns:280px 1fr 300px;min-height:100vh}
+
+  /* 左栏 */
+  .sidebar{position:sticky;top:0;height:100vh;padding:48px 28px 32px;border-right:1px solid var(--border);display:flex;flex-direction:column;justify-content:space-between;overflow-y:auto}
+  .sidebar .avatar{width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,#f5f0eb,#e8e0d8);display:flex;align-items:center;justify-content:center;font-size:32px;margin-bottom:20px;border:1px solid var(--border)}
+  .sidebar h1{font-family:var(--serif);font-size:22px;font-weight:400;line-height:1.2;margin-bottom:2px}
+  .sidebar .en-name{font-family:var(--serif);font-style:italic;font-size:13px;color:var(--fg2);margin-bottom:16px}
+  .sidebar .bio{font-size:12px;color:var(--fg2);line-height:1.7;margin-bottom:24px}
+  .sidebar nav{margin-bottom:auto}
+  .sidebar nav a{display:block;font-size:13px;font-weight:500;color:var(--fg2);padding:5px 0;transition:color .2s;letter-spacing:.3px}
+  .sidebar nav a:hover,.sidebar nav a.active{color:var(--accent)}
+  .sidebar .bottom-links{display:flex;gap:14px;flex-wrap:wrap;margin-top:24px}
+  .sidebar .bottom-links a{font-size:11px;color:var(--fg3);border-bottom:1px solid transparent;transition:all .2s}
+  .sidebar .bottom-links a:hover{color:var(--accent);border-color:var(--accent)}
+
+  /* 中栏 */
+  .main{padding:48px 40px 80px;max-width:680px}
+  .section-title{font-family:var(--serif);font-size:18px;font-weight:400;margin-bottom:24px;padding-bottom:12px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px}
+  .section-title .dot{width:5px;height:5px;border-radius:50%;background:var(--accent);flex-shrink:0}
+  .section{margin-bottom:48px}
+  .intro-text{font-size:14px;color:var(--fg2);line-height:1.85;margin-bottom:28px}
+  .intro-text p+p{margin-top:12px}
+  .intro-text em{color:var(--fg);font-style:normal;font-weight:500}
+  .stats-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--border);margin-bottom:32px}
+  .stat-item{background:var(--bg);padding:18px 12px;text-align:center}
+  .stat-item .num{font-family:var(--serif);font-size:28px;color:var(--accent);line-height:1}
+  .stat-item .lbl{font-size:10px;color:var(--fg3);margin-top:4px;letter-spacing:.5px;text-transform:uppercase}
+  .project{padding:18px 0;border-bottom:1px solid var(--border);transition:all .2s}
+  .project:last-child{border-bottom:none}
+  .project:hover .project-title{color:var(--accent)}
+  .project-header{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}
+  .project-title{font-size:15px;font-weight:600;transition:color .2s}
+  .project-year{font-size:12px;color:var(--fg3);font-family:var(--serif);font-style:italic}
+  .project-desc{font-size:13px;color:var(--fg2);line-height:1.65;margin-bottom:8px}
+  .project-tags{display:flex;gap:5px;flex-wrap:wrap}
+  .project-tags span{font-size:10px;font-weight:500;padding:2px 8px;background:#f5f3f0;border-radius:3px;color:var(--fg2)}
+  .skill-row{display:grid;grid-template-columns:120px 1fr 32px;align-items:center;gap:12px;padding:9px 0;border-bottom:1px solid #f0efec}
+  .skill-row:last-child{border-bottom:none}
+  .skill-row .name{font-size:13px;font-weight:500}
+  .skill-row .bar{height:3px;background:#eee;border-radius:2px;overflow:hidden}
+  .skill-row .fill{height:100%;background:var(--accent);border-radius:2px;transition:width 1.2s ease}
+  .skill-row .pct{font-size:11px;color:var(--fg3);text-align:right}
+  .tl-list{list-style:none}
+  .tl-item{position:relative;padding:0 0 20px 20px}
+  .tl-item:last-child{padding-bottom:0}
+  .tl-item::before{content:'';position:absolute;left:0;top:7px;width:7px;height:7px;border-radius:50%;border:2px solid var(--accent);background:var(--bg)}
+  .tl-item::after{content:'';position:absolute;left:3px;top:16px;bottom:0;width:1px;background:var(--border)}
+  .tl-item:last-child::after{display:none}
+  .tl-item .date{font-size:11px;color:var(--fg3);font-family:var(--serif);font-style:italic;margin-bottom:2px}
+  .tl-item h3{font-size:14px;font-weight:600;margin-bottom:3px}
+  .tl-item p{font-size:12px;color:var(--fg2);line-height:1.5}
+  .interests{display:flex;gap:8px;flex-wrap:wrap}
+  .interest{display:flex;align-items:center;gap:5px;padding:6px 14px;border:1px solid var(--border);border-radius:100px;font-size:12px;color:var(--fg2);transition:all .2s}
+  .interest:hover{border-color:var(--accent);color:var(--accent)}
+  .contact-row{display:flex;gap:12px;flex-wrap:wrap}
+  .contact-btn{padding:8px 20px;border:1px solid var(--border);border-radius:5px;font-size:12px;font-weight:500;transition:all .2s;display:inline-flex;align-items:center;gap:6px}
+  .contact-btn:hover{border-color:var(--accent);background:var(--accent);color:#fff}
+  .footer{margin-top:32px;padding-top:16px;border-top:1px solid var(--border);font-size:11px;color:var(--fg3)}
+
+  /* 右栏 */
+  .extra{position:sticky;top:0;height:100vh;padding:48px 24px 32px;border-left:1px solid var(--border);overflow-y:auto}
+  .extra-section{margin-bottom:28px}
+  .extra-title{font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--fg3);margin-bottom:14px}
+
+  /* 笔记列表 */
+  .note-item{
+    padding:12px 0;border-bottom:1px solid #f5f3f0;
+  }
+  .note-item:last-child{border-bottom:none}
+  .note-item .note-tag{
+    display:inline-block;font-size:9px;font-weight:600;
+    padding:2px 6px;border-radius:3px;margin-bottom:4px;
+    letter-spacing:.5px;text-transform:uppercase;
+  }
+  .note-item .note-tag.research{background:#e8f4f4;color:#0d7377}
+  .note-item .note-tag.code{background:#fef3c7;color:#92400e}
+  .note-item .note-tag.thought{background:#fce7f3;color:#9d174d}
+  .note-item h4{font-size:13px;font-weight:600;line-height:1.3;margin-bottom:3px;transition:color .2s;cursor:pointer}
+  .note-item h4:hover{color:var(--accent)}
+  .note-item .note-date{font-size:10px;color:var(--fg3)}
+  .note-item .note-excerpt{font-size:11px;color:var(--fg2);line-height:1.5;margin-top:4px}
+
+  /* 项目进度 */
+  .progress-item{margin-bottom:16px}
+  .progress-item:last-child{margin-bottom:0}
+  .progress-header{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}
+  .progress-name{font-size:12px;font-weight:600}
+  .progress-pct{font-size:11px;color:var(--accent);font-weight:600}
+  .progress-bar{height:5px;background:#eee;border-radius:3px;overflow:hidden}
+  .progress-fill{height:100%;border-radius:3px;background:var(--accent);transition:width 1s ease}
+  .progress-status{font-size:10px;color:var(--fg3);margin-top:3px}
+
+  /* 里程碑 */
+  .milestone{
+    display:flex;gap:10px;align-items:flex-start;
+    padding:10px 0;border-bottom:1px solid #f5f3f0;
+  }
+  .milestone:last-child{border-bottom:none}
+  .milestone .ms-icon{
+    width:24px;height:24px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-size:11px;flex-shrink:0;margin-top:2px;
+  }
+  .milestone .ms-icon.done{background:#dcfce7;color:#166534}
+  .milestone .ms-icon.wip{background:#fef3c7;color:#92400e}
+  .milestone .ms-icon.todo{background:#f5f5f5;color:#999}
+  .milestone .ms-text{font-size:12px;line-height:1.4}
+  .milestone .ms-text strong{font-weight:600}
+  .milestone .ms-text .ms-date{font-size:10px;color:var(--fg3)}
+
+  /* 名言 */
+  .quote-block{padding:14px;border-left:2px solid var(--accent);background:#faf8f5;border-radius:0 6px 6px 0}
+  .quote-block p{font-family:var(--serif);font-style:italic;font-size:13px;color:var(--fg2);line-height:1.6}
+  .quote-block .author{font-size:11px;color:var(--fg3);margin-top:6px;font-style:normal}
+
+  .fade{opacity:0;transform:translateY(10px);transition:all .5s ease}
+  .fade.show{opacity:1;transform:translateY(0)}
+
+  @media(max-width:1200px){.layout{grid-template-columns:240px 1fr}.extra{display:none}}
+  @media(max-width:800px){.layout{grid-template-columns:1fr}.sidebar{position:relative;height:auto;border-right:none;border-bottom:1px solid var(--border);padding:32px 20px}.main{padding:32px 20px}.stats-bar{grid-template-columns:repeat(2,1fr)}}
+</style>
 </head>
 <body>
-  <h1>欢迎访问zxp</h1>
-  <img id="main-img" src="image/howcani.png" alt="png" style="cursor:pointer;">
-  
-    <div style="font-size:12px;color:#bbb;margin-bottom:20px;">
-      <a href="#" id="log-link" style="color:#bbb;text-decoration:underline;">2025-11-29：图片自适应优化，添加右侧导航栏，zxp下方增加更新说明。</a>
+<div class="layout">
+
+  <!-- 左栏 -->
+  <aside class="sidebar">
+    <div>
+      <div class="avatar">🌲</div>
+      <h1>朱鑫鹏</h1>
+      <div class="en-name">Zhu Xinpeng</div>
+      <p class="bio">林业硕士 · 南京林业大学<br>遥感 · 碳汇 · GIS · Vibe Coding</p>
+      <nav>
+        <a href="#about" class="active">关于我</a>
+        <a href="#projects">项目</a>
+        <a href="#skills">技能</a>
+        <a href="#exp">经历</a>
+        <a href="#contact">联系</a>
+      </nav>
     </div>
-    <script>
-      // 日志跳转
-      document.getElementById('log-link').onclick = function(e) {
-        e.preventDefault();
-        window.location.href = 'log/update.log';
-      };
-      // 随机图片切换
-      const imgList = ['howcani.png', 'smilebro.png'];
-      document.getElementById('main-img').onclick = function() {
-        let current = this.src.split('/').pop();
-        let pool = imgList.filter(f => f !== current);
-        let next = pool[Math.floor(Math.random()*pool.length)] || imgList[0];
-        this.src = 'image/' + next;
-      };
-    </script>
-</body>
-</body>
-<div class="sidebar" id="sidebar">
-  <h3 id="sidebar-toggle" style="cursor:pointer;">导航</h3>
-  <ul>
-    <li><a href="index.html">首页</a></li>
-    <li><a href="categories.html">文章分类</a></li>
-    <li><a href="archive.html">归档</a></li>
-    <li><a href="tags.html">标签</a></li>
-    <li><a href="about.html">关于我</a></li>
-    <li><a href="guestbook.html">留言板</a></li>
-    <li><a href="changelog.html">更新日志</a></li>
-    <li><a href="research-log.html">科研日志</a></li>
-  </ul>
+    <div class="bottom-links">
+      <a href="https://github.com/talentzxp" target="_blank">GitHub</a>
+      <a href="#">Email</a>
+      <a href="#">WeChat</a>
+    </div>
+  </aside>
+
+  <!-- 中栏 -->
+  <main class="main">
+    <section class="section" id="about">
+      <div class="section-title fade"><div class="dot"></div>关于我</div>
+      <div class="intro-text fade">
+        <p>你好！我是<em>朱鑫鹏</em>，南京林业大学林业硕士在读。</p>
+        <p>研究方向涵盖<em>遥感影像分析</em>、<em>碳汇估算</em>、<em>物种分布建模</em>与林业生态优化。</p>
+        <p>用 AI 辅助编程快速迭代，6 个月交付 30+ 土壤三普横向项目。</p>
+      </div>
+      <div class="stats-bar fade">
+        <div class="stat-item"><div class="num">30+</div><div class="lbl">Projects</div></div>
+        <div class="stat-item"><div class="num">300K+</div><div class="lbl">Views</div></div>
+        <div class="stat-item"><div class="num">15k+</div><div class="lbl">likes</div></div>
+        <div class="stat-item"><div class="num">43</div><div class="lbl">Modules</div></div>
+        <div class="stat-item"><div class="num">500+</div><div class="lbl">Pictures</div></div>
+        <div class="stat-item"><div class="num">2k+</div><div class="lbl">Tables</div></div>
+
+      </div>
+    </section>
+    <section class="section" id="projects">
+      <div class="section-title fade"><div class="dot"></div>项目</div>
+      <div class="project fade"><div class="project-header"><div class="project-title">第三次全国土壤普查</div><div class="project-year">2025 - 2026</div></div><div class="project-desc">43 个 Python 模块，覆盖数据处理、建模、可视化全流程，6 个月交付 30+ 横向项目，负责上海（青浦、松江、嘉定）、江苏（常州、无锡）、湖南（湘阴）的土壤属性和类型制图,交付500+图件,2000+表格。</div><div class="project-tags"><span>Python</span><span>vibe coding</span><span>土壤</span><span>GIS</span></div></div>
+      <div class="project fade"><div class="project-header"><div class="project-title">CSSO 气候适配造林优化框架</div><div class="project-year">2026</div></div><div class="project-desc">Science Bulletin 论文复现，HSI/ESA/CAA 框架，RF+GBM+MaxEnt+XGBoost 集成建模，AUC 达 0.829。</div><div class="project-tags"><span>Python</span><span>SDM</span><span>XGBoost</span><span>GIS</span></div></div>
+      <div class="project fade"><div class="project-header"><div class="project-title">农作物期货预测系统</div><div class="project-year">2026</div></div><div class="project-desc">AKShare + 遥感 + ML + LSTM，43 个 Python 模块全栈预测系统。</div><div class="project-tags"><span>LSTM</span><span>AKShare</span><span>遥感</span></div></div>
+      <div class="project fade"><div class="project-header"><div class="project-title">森林覆盖 × LST 非对称效应</div><div class="project-year">2026</div></div><div class="project-desc">Su 2023 NCC + Zhang 2024 NG + Li 2024 SB 系统综述与复现。</div><div class="project-tags"><span>LST</span><span>LaTeX</span></div></div>
+      <div class="project fade"><div class="project-header"><div class="project-title">GIS 视频创作</div><div class="project-year">2026</div></div><div class="project-desc">抖音 GIS 领域视频，单条 20w+播放，8k+收藏点赞；小红书12w+播放，1.1w+收藏点赞。</div><div class="project-tags"><span>视频</span><span>GIS</span></div></div>
+    </section>
+    <section class="section" id="skills">
+      <div class="section-title fade"><div class="dot"></div>技能</div>
+      <div class="skill-row fade"><span class="name">Python</span><div class="bar"><div class="fill" style="width:95%"></div></div><span class="pct">95</span></div>
+      <div class="skill-row fade"><span class="name">GIS / QGIS</span><div class="bar"><div class="fill" style="width:95%"></div></div><span class="pct">95</span></div>
+      <div class="skill-row fade"><span class="name">摄影</span><div class="bar"><div class="fill" style="width:85%"></div></div><span class="pct">85</span></div>
+      <div class="skill-row fade"><span class="name">机器学习</span><div class="bar"><div class="fill" style="width:80%"></div></div><span class="pct">80</span></div>
+      <div class="skill-row fade"><span class="name">JavaScript</span><div class="bar"><div class="fill" style="width:70%"></div></div><span class="pct">70</span></div>
+      <div class="skill-row fade"><span class="name">视频创作</span><div class="bar"><div class="fill" style="width:75%"></div></div><span class="pct">75</span></div>
+    </section>
+    <section class="section" id="exp">
+      <div class="section-title fade"><div class="dot"></div>经历</div>
+      <ul class="tl-list">
+        <li class="tl-item fade"><div class="date">2021 — 2025</div><h3>南京林业大学 · 本科</h3><p>水土保持与荒漠化防治 遥感、碳汇、林业生态方向</p></li>
+        <li class="tl-item fade"><div class="date">2025 — 至今</div><h3>南京林业大学 · 硕士</h3><p>林业 · 遥感、碳汇、林业生态方向</p></li>
+        <li class="tl-item fade"><div class="date">2025 — 2026</div><h3>第三次全国土壤普查</h3><p>参与土壤土壤属性和类型制图的核心工作</p></li>
+        <li class="tl-item fade"><div class="date">2026</div><h3>Science Bulletin 论文</h3><p>CSSO 气候适配造林优化框架复现</p></li>
+      </ul>
+    </section>
+    <section class="section">
+      <div class="section-title fade"><div class="dot"></div>兴趣</div>
+      <div class="interests fade">
+        <div class="interest">视频创作</div>
+        <div class="interest"> AI编程</div>
+        <div class="interest">阅读</div>
+        <div class="interest">摄影</div>
+      </div>
+    </section>
+    <section class="section" id="contact">
+      <div class="section-title fade"><div class="dot"></div>联系</div>
+      <div class="contact-row fade">
+        <a class="contact-btn" href="https://github.com/talentzxp" target="_blank">GitHub</a>
+        <a class="contact-btn" href="mailto:1074022329@qq.com">Email</a>
+        <a class="contact-btn" href="null">WeChat</a>
+      </div>
+    </section>
+    <div class="footer">© 2026 ZXP · have a nice day</div>
+  </main>
+
+  <!-- 右栏：笔记 + 进度（从 data.json / research-manifest.json 动态加载） -->
+  <aside class="extra">
+    <div class="extra-section">
+      <div class="extra-title">科研笔记</div>
+      <div id="notes-container">
+        <div style="font-size:12px;color:var(--fg3)">加载中...</div>
+      </div>
+    </div>
+
+    <div class="extra-section">
+      <div class="extra-title">进行中</div>
+      <div id="projects-container">
+        <div style="font-size:12px;color:var(--fg3)">加载中...</div>
+      </div>
+    </div>
+
+    <div class="extra-section">
+      <div class="extra-title">里程碑</div>
+      <div id="milestones-container">
+        <div style="font-size:12px;color:var(--fg3)">加载中...</div>
+      </div>
+    </div>
+  </aside>
+
 </div>
-<script src="sidebar.js"></script>
+<script>
+const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('show')})},{threshold:.1});
+document.querySelectorAll('.fade').forEach(el=>obs.observe(el));
+document.querySelectorAll('.sidebar nav a').forEach(a=>{a.addEventListener('click',function(){document.querySelectorAll('.sidebar nav a').forEach(x=>x.classList.remove('active'));this.classList.add('active')})});
+
+// ========== 右栏数据加载 ==========
+
+// 标签映射
+const tagMap = {
+  research: { label: '研究', cls: 'research' },
+  code: { label: '代码', cls: 'code' },
+  thought: { label: '思考', cls: 'thought' }
+};
+
+// 状态图标映射
+const statusIcon = { done: '✓', wip: '◉', todo: '○' };
+
+// 加载科研笔记
+async function loadNotes() {
+  const container = document.getElementById('notes-container');
+  try {
+    // 读取 manifest
+    const manifestRes = await fetch('research-manifest.json');
+    const manifest = await manifestRes.json();
+    
+    // 逐个加载 md 文件，取前100字作摘要
+    const notes = [];
+    for (const item of (manifest.notes || [])) {
+      try {
+        const res = await fetch(item.file);
+        const md = await res.text();
+        // 取第一个非标题非空行作为摘要
+        const lines = md.split('\n').filter(l => l.trim() && !l.startsWith('#'));
+        const excerpt = lines.slice(0, 2).join(' ').substring(0, 80);
+        notes.push({ ...item, excerpt });
+      } catch {
+        notes.push({ ...item, excerpt: '(无法加载)' });
+      }
+    }
+    
+    if (notes.length === 0) {
+      container.innerHTML = '<div style="font-size:12px;color:var(--fg3)">暂无笔记，在 research-log/ 中添加</div>';
+      return;
+    }
+    
+    container.innerHTML = notes.map(n => {
+      const tag = tagMap[n.tag] || { label: n.tag, cls: '' };
+      return `
+        <div class="note-item">
+          <span class="note-tag ${tag.cls}">${tag.label}</span>
+          <h4>${n.title}</h4>
+          <div class="note-date">${n.date}</div>
+          <div class="note-excerpt">${n.excerpt}...</div>
+        </div>`;
+    }).join('');
+    
+  } catch (err) {
+    container.innerHTML = '<div style="font-size:12px;color:var(--fg3)">无法加载 research-manifest.json</div>';
+  }
+}
+
+// 加载项目进度
+async function loadProjects() {
+  const container = document.getElementById('projects-container');
+  try {
+    const res = await fetch('data.json');
+    const data = await res.json();
+    
+    container.innerHTML = (data.projects || []).map(p => `
+      <div class="progress-item">
+        <div class="progress-header">
+          <span class="progress-name">${p.name}</span>
+          <span class="progress-pct">${p.pct}%</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" style="width:${p.pct}%"></div>
+        </div>
+        <div class="progress-status">${p.status}</div>
+      </div>
+    `).join('');
+    
+  } catch {
+    container.innerHTML = '<div style="font-size:12px;color:var(--fg3)">无法加载 data.json</div>';
+  }
+}
+
+// 加载里程碑
+async function loadMilestones() {
+  const container = document.getElementById('milestones-container');
+  try {
+    const res = await fetch('data.json');
+    const data = await res.json();
+    
+    container.innerHTML = (data.milestones || []).map(m => `
+      <div class="milestone">
+        <div class="ms-icon ${m.status}">${statusIcon[m.status] || '○'}</div>
+        <div class="ms-text">
+          <strong>${m.text}</strong><br>
+          <span class="ms-date">${m.date}</span>
+        </div>
+      </div>
+    `).join('');
+    
+  } catch {
+    container.innerHTML = '<div style="font-size:12px;color:var(--fg3)">无法加载 data.json</div>';
+  }
+}
+
+// 页面加载时拉取数据
+loadNotes();
+loadProjects();
+loadMilestones();
+
+</script>
+</body>
 </html>
